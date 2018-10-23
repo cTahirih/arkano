@@ -56,7 +56,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
-              v-model="dataDashboard.newPurchases",
+              v-model="dataValues.newPurchases",
               placeholder="Nuevas compras"
             )
           .form__item
@@ -64,7 +64,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
-              v-model="dataDashboard.increasePurchases",
+              v-model="dataValues.increasePurchases",
               placeholder="% Incremento de compras"
             )
           .form__item
@@ -72,7 +72,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
-              v-model="dataDashboard.newUsers",
+              v-model="dataValues.newUsers",
               placeholder="Nuevos Usuarios"
             )
           .form__item
@@ -80,7 +80,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
-              v-model="dataDashboard.newVisits",
+              v-model="dataValues.newVisits",
               placeholder="Nuevas Visitas"
             )
           .form__item.button
@@ -89,7 +89,7 @@
         .overview__card.sky
           .card__body
             .card__total 
-              p {{ dataDashboard.newPurchases }}
+              p {{ dataCards.newPurchases }}
               span Nuevas Compras
             .card__icon
               img(src="../static/assets/shopping_bag.png" alt="Shopping Bag") 
@@ -99,7 +99,7 @@
         .overview__card.green
           .card__body
             .card__total 
-              p {{ dataDashboard.increasePurchases }}
+              p {{ dataCards.increasePurchases }}
               span Incremento de Compras
             .card__icon
               img(src="../static/assets/bar-chart.png" alt="Shopping Bag") 
@@ -109,7 +109,7 @@
         .overview__card.orange
           .card__body
             .card__total 
-              p {{ dataDashboard.newUsers }}
+              p {{ dataCards.newUsers }}
               span Nuevos Usuarios
             .card__icon
               img(src="../static/assets/new_user.png" alt="Shopping Bag") 
@@ -120,7 +120,7 @@
         .overview__card.red
           .card__body
             .card__total 
-              p {{ dataDashboard.newVisits }}
+              p {{ dataCards.newVisits }}
               span Nuevas Visitas
             .card__icon
               img(src="../static/assets/pie_chart.png" alt="Shopping Bag") 
@@ -139,11 +139,17 @@ export default {
       showAsideMenu: false,
       selectMenu: false,
       optionActive: 'form',
-      dataDashboard: {
+      dataValues: {
         newPurchases: null,
         increasePurchases: null,
         newUsers: null,
         newVisits: null
+      },
+      dataCards: {
+        newPurchases: 10,
+        increasePurchases: 12,
+        newUsers: 9,
+        newVisits: 1
       }
     }
   },
@@ -151,6 +157,15 @@ export default {
   methods: {
     saveData() {
       this.optionActive = 'data';
+      this.dataCards.newPurchases = this.dataCards.newPurchases + parseInt(this.dataValues.newPurchases);
+      this.dataCards.increasePurchases = this.dataCards.increasePurchases + parseInt(this.dataValues.increasePurchases);
+      this.dataCards.newUsers = this.dataCards.newUsers + parseInt(this.dataValues.newUsers);
+      this.dataCards.newVisits = this.dataCards.newVisits + parseInt(this.dataValues.newVisits);
+
+      this.dataValues.newPurchases = null;
+      this.dataValues.increasePurchases = null;
+      this.dataValues.newUsers = null;
+      this.dataValues.newVisits = null;
     }
   }
 }
@@ -313,12 +328,12 @@ export default {
     padding: 15px 5px;
     justify-content: space-between;
     background: #1e282c;
-    border-left: 3px solid #3c8dbc;
-    cursor: pointer;
+    border-left: 3px solid #3c8dbc;    
   }
 
   .aside__menu__buttons i {
     padding-right: 5px;
+    cursor: pointer;
   }
 
   .aside__select p {
