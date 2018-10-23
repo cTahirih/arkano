@@ -131,6 +131,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Header',
   data () {
@@ -162,6 +163,21 @@ export default {
     }
     ele.onpaste = function(e){
       e.preventDefault();
+    }
+
+    if (navigator.geolocation) {
+      
+      navigator.geolocation.getCurrentPosition(function(position) {
+        let myLocation = { 
+          lat: position.coords.latitude, 
+          lng: position.coords.longitude 
+        };
+        console.log(myLocation);
+       
+      });
+     
+    } else {
+      console.log('Geolocation is not supported by this browser.');
     }
   },
 
@@ -442,7 +458,7 @@ export default {
   .overview__card {
     width: 46.7999999999%;
     border-radius: 5px;
-    margin: 0 5px;
+    margin: 5px;
   }
 
   .card__body {
