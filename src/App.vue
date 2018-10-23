@@ -165,20 +165,7 @@ export default {
       e.preventDefault();
     }
 
-    if (navigator.geolocation) {
-      
-      navigator.geolocation.getCurrentPosition(function(position) {
-        let myLocation = { 
-          lat: position.coords.latitude, 
-          lng: position.coords.longitude 
-        };
-        console.log(myLocation);
-       
-      });
-     
-    } else {
-      console.log('Geolocation is not supported by this browser.');
-    }
+    this.getLocationKey();
   },
 
   methods: {
@@ -193,6 +180,37 @@ export default {
       this.dataValues.increasePurchases = null;
       this.dataValues.newUsers = null;
       this.dataValues.newVisits = null;
+    },
+
+    getLocationKey() {
+      if (navigator.geolocation) {      
+        navigator.geolocation.getCurrentPosition(function(position) {
+          let myLocation = { 
+            lat: position.coords.latitude, 
+            lng: position.coords.longitude 
+          };
+        });
+
+      } else {
+        console.log('Geolocation is not supported by this browser.');
+      }
+          axios.post('http://dataservice.accuweather.com/locations/v1/cities/geoposition/search', {
+            apikey: 'Me26BE1AJl8bPNA5ujC4ndnweDO6Bh7U',
+            q: '-12.0635392,-77.0179072',
+            languaje: 'en'
+          })
+            .then(response => {
+              let res = response.data;
+
+            })
+            .catch(e => {
+              console.log(e);
+            })
+            .then(() => {
+              // always executed
+            });
+      
+
     }
   }
 }
