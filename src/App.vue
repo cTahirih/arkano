@@ -99,7 +99,7 @@
         .overview__card.green
           .card__body
             .card__total 
-              p {{ dataCards.increasePurchases }}
+              p {{ dataCards.increasePurchases }}%
               span Incremento de Compras
             .card__icon
               img(src="../static/assets/bar-chart.png" alt="Shopping Bag") 
@@ -138,7 +138,7 @@ export default {
       name: 'Usuario',
       showAsideMenu: false,
       selectMenu: false,
-      optionActive: 'form',
+      optionActive: 'data',
       dataValues: {
         newPurchases: null,
         increasePurchases: null,
@@ -149,8 +149,19 @@ export default {
         newPurchases: 10,
         increasePurchases: 12,
         newUsers: 9,
-        newVisits: 1
+        newVisits: 3
       }
+    }
+  },
+
+  mounted() {
+    var ele = document.querySelectorAll('.form__item--input')[0];
+    ele.onkeypress = function(e) {
+      if(isNaN(this.value+String.fromCharCode(e.charCode)))
+          return false;
+    }
+    ele.onpaste = function(e){
+      e.preventDefault();
     }
   },
 
