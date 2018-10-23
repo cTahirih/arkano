@@ -25,7 +25,56 @@
           p Main navigation
         .aside__menu__buttons
           p Dashboard
-          i.fas.fa-angle-down
+          i.fas.fa-angle-down(
+            @click="selectMenu = true",
+            :class="[selectMenu == true ? 'is-hide': '']"
+          )
+          i.fas.fa-angle-up( 
+            @click="selectMenu = false",
+            :class="[selectMenu == true ? '': 'is-hide']"
+          )
+        transition(name="fade")
+          .aside__select(v-show="selectMenu")
+            p Estadísticas
+            p Ingresar data
+      
+    .main(:class="[showAsideMenu == true ? 'is-active': '']")
+      .main__title
+        h2.form__title  Dashboard >
+        span.form__title--span Nueva data
+      .main__form
+        form
+          h2 Datos en Dashboard
+          .form__item
+            label.form__item--label Cantidad de nuevas compras
+            input.form__item--input(
+              type="tel", 
+              required="true",
+              placeholder="Nuevas compras"
+            )
+          .form__item
+            label.form__item--label Incremento de compras
+            input.form__item--input(
+              type="tel", 
+              required="true",
+              placeholder="% Incremento de compras"
+            )
+          .form__item
+            .form__item--label Cantidad de nuevos usuarios
+            input.form__item--input(
+              type="tel", 
+              required="true",
+              placeholder="Nuevos Usuarios"
+            )
+          .form__item
+            label.form__item--label Cantidad nuevas visitas
+            input.form__item--input(
+              type="tel", 
+              required="true",
+              placeholder="Nuevas Visitas"
+            )
+          .form__item.button
+            button.form__item--button Ingresar Datos
     
 </template>
 
@@ -36,6 +85,7 @@ export default {
     return {
       name: 'Usuario',
       showAsideMenu: false,
+      selectMenu: false,
     }
   }
 }
@@ -67,6 +117,7 @@ export default {
 
   body {
     background-color: #ecf0f5;
+    color: #1e282c;
   }
 
   *, *:before, *:after {
@@ -116,13 +167,22 @@ export default {
     display: none;
   }
 
+  .is-active {
+    width: 100%!important;
+  }
+
+
+
   .aside {
     width: 45%;
     background: #222d32;
     color: white;
     height: 92vh;
     padding: 10px 0;
-    transition: 0.5s; 
+    display: inline-block;
+    transition: 0.5s;
+    position: fixed;
+    z-index: 1000;
   }
 
   .user__image {
@@ -156,11 +216,97 @@ export default {
     padding: 15px 5px;
     justify-content: space-between;
     background: #1e282c;
-    border-left: 3px solid blue;
+    border-left: 3px solid #3c8dbc;
+    cursor: pointer;
   }
 
   .aside__menu__buttons i {
     padding-right: 5px;
+  }
+
+  .aside__select p {
+    padding: 10px 5px;
+    border-bottom: 1px solid #d9d9d9;
+    cursor: pointer;
+  }
+
+  .aside__select p:hover {
+    background: #3c8dbc;
+  }
+
+  .main {
+    min-height: 92vh;
+    display: inline-block;
+    position: absolute;
+    padding: 10px 20px;
+    width: 100%; 
+  }
+
+  .main__form {
+    display: flex;
+    justify-content: center;
+  }
+
+  .main__form form {
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .form__title {
+    display: inline-block;
+    padding-right: 5px;
+    font-size: 20px;
+  }
+
+  .form__title--span {
+    font-size: 20px;
+  }
+
+  .form__item--label {
+    display: block;
+  }
+
+  .form__item {
+    margin: 10px 0;
+  }
+
+  .form__item--label {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    color: #367fa9;
+  }
+
+  .form__item--input {
+    background: inherit;
+    border-radius: 5px;
+    padding: 5px;
+    border: 2px solid #3c8dbc;
+    font-family: inherit;
+    width: 100%;
+  }
+
+  .form__item--input:focus {
+    outline: none;
+    border: 2px solid #44accf;
+  }
+
+  .form__item.button {
+    display: flex;
+    justify-content: end;
+  }
+
+  .form__item--button {
+    background: #367fa9;
+    border-radius: 5px;
+    padding: 10px 5px;    
+    font-size: 15px;
+    color: #fff;
+    border: none;
+    font-weight: bold;
   }
 
   @media (min-width: 768px) {
@@ -171,6 +317,18 @@ export default {
 
     .user__name {
       font-size: 14px;
+    }
+
+    .aside {
+      position: relative;
+    }
+
+    .is-active {
+      width: 80%!important;
+    }
+
+    .main__form form {
+      width: 50%;
     }
   }
 </style>
