@@ -2,6 +2,13 @@
   #app
     header.header
       h1.header__title e-Ventas
+      .header__widget(v-cloak)
+        span Temperatura:        
+        span  {{ widget.temperature }}°
+        .widget__icon
+          img(:src="'../static/assets/icon_api/' + widget.icon + '.png'")
+        span Zona Horaria:
+        span  {{ widget.timezone }}
       p.header__menu
         i.fas.fa-bars(
           @click="showAsideMenu = true",
@@ -11,7 +18,7 @@
           @click="showAsideMenu = false",
           :class="[showAsideMenu == true ? '': 'is-hide']"
       )
-    aside.aside(v-show="showAsideMenu")
+    aside.aside(v-if="showAsideMenu")
       .aside__user
         .user__image
           img(src="../static/assets/user.png" alt="User")
@@ -35,14 +42,21 @@
           )
         .aside__select(
           v-show="selectMenu", 
-        )
+          )
           p(
             @click="optionActive = 'data'"
           ) Estadísticas
           p(
             @click="optionActive = 'form'"
           ) Ingresar Data
-      
+        .aside__widget(v-cloak)
+          span Temperatura:          
+          span  {{ widget.temperature }}°
+          .widget__icon
+            img(:src="'../static/assets/icon_api/' + widget.icon + '.png'")
+          br
+          span.aside__widget Zona Horaria:          
+          span  {{ widget.timezone }}
     .main(:class="[showAsideMenu == true ? 'is-active': '']")
       .main__title
         h2.form__title  Dashboard >
@@ -151,6 +165,11 @@ export default {
         increasePurchases: 12,
         newUsers: 9,
         newVisits: 3
+      },
+      widget: {
+        timezone: '',
+        temperature: '',
+        icon: ''
       }
     }
   },
@@ -183,18 +202,33 @@ export default {
     },
 
     getLocationKey() {
+
       if (navigator.geolocation) {      
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition((position) => {
           let myLocation = { 
             lat: position.coords.latitude, 
             lng: position.coords.longitude 
           };
-        });
 
+          let proxy = 'https://cors-anywhere.herokuapp.com/';
+          let apiURL = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/133ef44c6b580d317343f1b7dca221e0/${myLocation.lat},${myLocation.lng}?units=si`;
+
+          let url = proxy + apiURL;
+
+          axios.get(url)
+            .then(response => {
+              let res = response.data;
+              this.widget.temperature = res.currently.temperature;
+              this.widget.icon = res.currently.icon;
+              this.widget.timezone = res.timezone;          
+            })
+            .catch(e => {
+              console.log(e);
+            })
+        });
       } else {
         console.log('Geolocation is not supported by this browser.');
-      }    
-
+      }
     }
   }
 }
@@ -214,7 +248,7 @@ export default {
     font-style: normal;
   }
   html {
-    font-family: 'gotham_book';
+    font-family: 'gotham_book', 'sans-serif';
     font-size: 16px;
     word-spacing: 1px;
     -ms-text-size-adjust: 100%;
@@ -227,6 +261,10 @@ export default {
   body {
     background-color: #ecf0f5;
     color: #1e282c;
+  }
+
+  [v-cloak] {
+    display: none;
   }
 
   *, *:before, *:after {
@@ -294,6 +332,13 @@ export default {
     width: 45%;
   }
 
+  .header__widget {
+    display: none;
+    color: #fff;
+    text-align: left;
+    width: 50%;
+  }
+  
   .header__menu,
   .header__title {
     color: #fff;
@@ -312,9 +357,7 @@ export default {
     width: 100%!important;
   }
 
-
-
-  .aside {
+  .aside {    
     width: 45%;
     background: #222d32;
     color: white;
@@ -352,6 +395,13 @@ export default {
     font-weight: bold;
   }
 
+  .aside__widget {
+    display: block;
+    margin-top: 10px;
+    padding: 15px 5px;
+    font-weight: bold;
+  }
+
   .aside__menu__buttons {
     display: flex;
     padding: 15px 5px;
@@ -373,6 +423,14 @@ export default {
 
   .aside__select p:hover {
     background: #3c8dbc;
+  }
+
+  .widget__icon {
+    width: 40px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 5px;
+
   }
 
   .main {
@@ -507,6 +565,14 @@ export default {
 
     .user__name {
       font-size: 14px;
+    }
+
+    .header__widget {
+      display: block;
+    }
+
+    .aside__widget {
+      display: none;
     }
 
     .aside {
