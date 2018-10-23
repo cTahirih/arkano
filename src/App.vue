@@ -35,16 +35,20 @@
           )
         .aside__select(
           v-show="selectMenu", 
-          v-for="item in optionSelect",
-          :click="showOptionSelected"
         )
-          p {{ item }}
+          p(
+            @click="optionActive = 'data'"
+          ) Estadísticas
+          p(
+            @click="optionActive = 'form'"
+          ) Ingresar Data
       
     .main(:class="[showAsideMenu == true ? 'is-active': '']")
       .main__title
         h2.form__title  Dashboard >
-        span.form__title--span Nueva data
-      .main__form
+        span.form__title--span(v-if="optionActive === 'form'") Nueva data
+        span.form__title--span(v-else) Estadísticas
+      .main__form(v-show="optionActive === 'form'")
         form
           h2 Datos en Dashboard
           .form__item
@@ -77,12 +81,12 @@
             )
           .form__item.button
             button.form__item--button Ingresar Datos
-      .main__overview
+      .main__overview(v-show="optionActive === 'data'")
         .overview__card.sky
           .card__body
             .card__total 
-              p 123
-              span Compra total
+              p {{ dataDashboard.newPurchases }}
+              span Nuevas Compras
             .card__icon
               img(src="../static/assets/shopping_bag.png" alt="Shopping Bag") 
           .card__footer.dark-sky
@@ -91,8 +95,8 @@
         .overview__card.green
           .card__body
             .card__total 
-              p 123
-              span Compra total
+              p {{ dataDashboard.increasePurchases }}
+              span Incremento de Compras
             .card__icon
               img(src="../static/assets/bar-chart.png" alt="Shopping Bag") 
           .card__footer.dark-green
@@ -101,8 +105,8 @@
         .overview__card.orange
           .card__body
             .card__total 
-              p 123
-              span Compra total
+              p {{ dataDashboard.newUsers }}
+              span Nuevos Usuarios
             .card__icon
               img(src="../static/assets/new_user.png" alt="Shopping Bag") 
           .card__footer.dark-orange
@@ -112,8 +116,8 @@
         .overview__card.red
           .card__body
             .card__total 
-              p 123
-              span Compra total
+              p {{ dataDashboard.newVisits }}
+              span Nuevas Visitas
             .card__icon
               img(src="../static/assets/pie_chart.png" alt="Shopping Bag") 
           .card__footer.dark-red
@@ -130,14 +134,19 @@ export default {
       name: 'Usuario',
       showAsideMenu: false,
       selectMenu: false,
-      optionActive: false,
-      optionSelect: ['Estadísticas', 'Ingresar Data'],
+      optionActive: 'form',
+      dataDashboard: {
+        newPurchases: 10,
+        increasePurchases: 5,
+        newUsers: 4,
+        newVisits: 1
+      }
     }
   },
 
   methods: {
     showOptionSelected() {
-      console.log('hola')
+      console.log(this.optionSelect)
     }
   }
 }
@@ -396,7 +405,8 @@ export default {
   .main__overview {
     width: 100%;
     display: flex;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
+    margin: 10px 0;
   }
 
   .overview__card {
