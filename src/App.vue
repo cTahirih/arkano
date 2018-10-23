@@ -33,10 +33,12 @@
             @click="selectMenu = false",
             :class="[selectMenu == true ? '': 'is-hide']"
           )
-        transition(name="fade")
-          .aside__select(v-show="selectMenu")
-            p Estadísticas
-            p Ingresar data
+        .aside__select(
+          v-show="selectMenu", 
+          v-for="item in optionSelect",
+          :click="showOptionSelected"
+        )
+          p {{ item }}
       
     .main(:class="[showAsideMenu == true ? 'is-active': '']")
       .main__title
@@ -75,7 +77,49 @@
             )
           .form__item.button
             button.form__item--button Ingresar Datos
-    
+      .main__overview
+        .overview__card.sky
+          .card__body
+            .card__total 
+              p 123
+              span Compra total
+            .card__icon
+              img(src="../static/assets/shopping_bag.png" alt="Shopping Bag") 
+          .card__footer.dark-sky
+            span Más info
+            i.fas.fa-arrow-circle-right
+        .overview__card.green
+          .card__body
+            .card__total 
+              p 123
+              span Compra total
+            .card__icon
+              img(src="../static/assets/bar-chart.png" alt="Shopping Bag") 
+          .card__footer.dark-green
+            span Más info
+            i.fas.fa-arrow-circle-right
+        .overview__card.orange
+          .card__body
+            .card__total 
+              p 123
+              span Compra total
+            .card__icon
+              img(src="../static/assets/new_user.png" alt="Shopping Bag") 
+          .card__footer.dark-orange
+            span Más info
+            i.fas.fa-arrow-circle-right
+
+        .overview__card.red
+          .card__body
+            .card__total 
+              p 123
+              span Compra total
+            .card__icon
+              img(src="../static/assets/pie_chart.png" alt="Shopping Bag") 
+          .card__footer.dark-red
+            span Más info
+            i.fas.fa-arrow-circle-right
+
 </template>
 
 <script>
@@ -86,6 +130,14 @@ export default {
       name: 'Usuario',
       showAsideMenu: false,
       selectMenu: false,
+      optionActive: false,
+      optionSelect: ['Estadísticas', 'Ingresar Data'],
+    }
+  },
+
+  methods: {
+    showOptionSelected() {
+      console.log('hola')
     }
   }
 }
@@ -127,6 +179,38 @@ export default {
 
   img{
     max-width: 100%;
+  }
+
+  .sky {
+    background: #00c0ef;
+  }
+
+  .dark-sky {
+    background: #00acd7;
+  }
+
+  .green {
+    background: #00a65a;
+  }
+
+  .dark-green {
+    background: #009551;
+  }
+
+  .orange {
+    background: #f29b11;
+  }
+
+  .dark-orange {
+    background: #cf850f;
+  }
+
+  .red {
+    background: #dd4b39;
+  }
+
+  .dark-red {
+    background: #c64333;
   }
 
   .header,
@@ -309,6 +393,54 @@ export default {
     font-weight: bold;
   }
 
+  .main__overview {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap; 
+  }
+
+  .overview__card {
+    width: 46.7999999999%;
+    border-radius: 5px;
+    margin: 0 5px;
+  }
+
+  .card__body {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+
+  .card__total {
+    color: #fff;
+    display: inline-block;
+  }
+
+  .card__total p {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .card__total span {
+    font-size: 15px;
+  }
+
+  .card__icon {
+    width: 80px;
+  }
+
+  .card__footer {
+    padding: 10px 15px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .card__footer i {
+    padding: 0 5px;
+  }
+
   @media (min-width: 768px) {
     .header__title,
     .aside {
@@ -327,8 +459,16 @@ export default {
       width: 80%!important;
     }
 
+    .main__overview {
+      flex-wrap: nowrap; 
+    }
+
     .main__form form {
       width: 50%;
+    }
+
+    .overview__card {
+      width: 25%;
     }
   }
 </style>
