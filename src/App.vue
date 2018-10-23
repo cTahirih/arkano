@@ -193,23 +193,7 @@ export default {
 
       } else {
         console.log('Geolocation is not supported by this browser.');
-      }
-          axios.post('http://dataservice.accuweather.com/locations/v1/cities/geoposition/search', {
-            apikey: 'Me26BE1AJl8bPNA5ujC4ndnweDO6Bh7U',
-            q: '-12.0635392,-77.0179072',
-            languaje: 'en'
-          })
-            .then(response => {
-              let res = response.data;
-
-            })
-            .catch(e => {
-              console.log(e);
-            })
-            .then(() => {
-              // always executed
-            });
-      
+      }    
 
     }
   }
