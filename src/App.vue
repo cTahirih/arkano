@@ -49,13 +49,14 @@
         span.form__title--span(v-if="optionActive === 'form'") Nueva data
         span.form__title--span(v-else) Estadísticas
       .main__form(v-show="optionActive === 'form'")
-        form
+        form(v-on:submit.prevent="saveData")
           h2 Datos en Dashboard
           .form__item
             label.form__item--label Cantidad de nuevas compras
             input.form__item--input(
               type="tel", 
               required="true",
+              v-model="dataDashboard.newPurchases",
               placeholder="Nuevas compras"
             )
           .form__item
@@ -63,6 +64,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
+              v-model="dataDashboard.increasePurchases",
               placeholder="% Incremento de compras"
             )
           .form__item
@@ -70,6 +72,7 @@
             input.form__item--input(
               type="tel", 
               required="true",
+              v-model="dataDashboard.newUsers",
               placeholder="Nuevos Usuarios"
             )
           .form__item
@@ -77,10 +80,11 @@
             input.form__item--input(
               type="tel", 
               required="true",
+              v-model="dataDashboard.newVisits",
               placeholder="Nuevas Visitas"
             )
           .form__item.button
-            button.form__item--button Ingresar Datos
+            button.form__item--button(type="submit") Ingresar Datos
       .main__overview(v-show="optionActive === 'data'")
         .overview__card.sky
           .card__body
@@ -136,17 +140,17 @@ export default {
       selectMenu: false,
       optionActive: 'form',
       dataDashboard: {
-        newPurchases: 10,
-        increasePurchases: 5,
-        newUsers: 4,
-        newVisits: 1
+        newPurchases: null,
+        increasePurchases: null,
+        newUsers: null,
+        newVisits: null
       }
     }
   },
 
   methods: {
-    showOptionSelected() {
-      console.log(this.optionSelect)
+    saveData() {
+      this.optionActive = 'data';
     }
   }
 }
